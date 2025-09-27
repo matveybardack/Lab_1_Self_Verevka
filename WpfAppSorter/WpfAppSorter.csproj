@@ -63,6 +63,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ArrayDataTypes.cs" />
+    <Compile Include="ArrayManagerService.cs" />
+    <Compile Include="ArraySorterService.cs" />
+    <Compile Include="FileManagerService.cs" />
+    <Compile Include="IArrayManagerService.cs" />
+    <Compile Include="IArraySorterService.cs" />
+    <Compile Include="IFileManagerService.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -100,5 +107,6 @@
       <Name>ClassLibrarySorter</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
