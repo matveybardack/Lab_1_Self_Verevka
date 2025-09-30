@@ -30,9 +30,6 @@ namespace WpfAppSorter.Services
         /// <returns>Отсортированный массив</returns>
         public List<object> BubbleSort(List<object> array)
         {
-            if (array == null)
-                throw new ArgumentNullException(nameof(array));
-
             return _arraySorter.BubbleSort(array);
         }
 
@@ -43,9 +40,6 @@ namespace WpfAppSorter.Services
         /// <returns>Отсортированный массив</returns>
         public List<object> SelectionSort(List<object> array)
         {
-            if (array == null)
-                throw new ArgumentNullException(nameof(array));
-
             return _arraySorter.SelectionSort(array);
         }
 
@@ -56,9 +50,6 @@ namespace WpfAppSorter.Services
         /// <returns>Отсортированный массив</returns>
         public List<object> InsertionSort(List<object> array)
         {
-            if (array == null)
-                throw new ArgumentNullException(nameof(array));
-
             return _arraySorter.InsertionSort(array);
         }
 
@@ -69,21 +60,9 @@ namespace WpfAppSorter.Services
         /// <returns>Отсортированный массив</returns>
         public List<object> QuickSort(List<object> array)
         {
-            if (array == null)
-                throw new ArgumentNullException(nameof(array));
-
             return _arraySorter.QuickSort(array);
         }
 
-        /// <summary>
-        /// Сравнивает два объекта
-        /// </summary>
-        /// <param name="a">Первый объект</param>
-        /// <param name="b">Второй объект</param>
-        /// <returns>Результат сравнения</returns>
-        public int CompareObjects(object a, object b)
-        {
-            return _arraySorter.CompareObjects(a, b);
-        }
+        
     }
 }

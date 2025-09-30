@@ -18,7 +18,9 @@ namespace ClassLibrarySorter
         /// <returns>Отсортированный массив</returns>
         public List<object> BubbleSort(List<object> array)
         {
-            if (array == null || array.Count <= 1)
+            if (array == null)
+                throw new ArgumentNullException(nameof(array));
+            if (array.Count <= 1)
                 return new List<object>(array);
 
             var sortedArray = new List<object>(array);
@@ -46,7 +48,9 @@ namespace ClassLibrarySorter
         /// <returns>Отсортированный массив</returns>
         public List<object> SelectionSort(List<object> array)
         {
-            if (array == null || array.Count <= 1)
+            if (array == null)
+                throw new ArgumentNullException(nameof(array));
+            if (array.Count <= 1)
                 return new List<object>(array);
 
             var sortedArray = new List<object>(array);
@@ -79,7 +83,9 @@ namespace ClassLibrarySorter
         /// <returns>Отсортированный массив</returns>
         public List<object> InsertionSort(List<object> array)
         {
-            if (array == null || array.Count <= 1)
+            if (array == null)
+                throw new ArgumentNullException(nameof(array));
+            if (array.Count <= 1)
                 return new List<object>(array);
 
             var sortedArray = new List<object>(array);
@@ -106,7 +112,9 @@ namespace ClassLibrarySorter
         /// <returns>Отсортированный массив</returns>
         public List<object> QuickSort(List<object> array)
         {
-            if (array == null || array.Count <= 1)
+            if (array == null)
+                throw new ArgumentNullException(nameof(array));
+            if (array.Count <= 1)
                 return new List<object>(array);
 
             var sortedArray = new List<object>(array);
@@ -166,7 +174,7 @@ namespace ClassLibrarySorter
         /// <param name="a">Первый объект</param>
         /// <param name="b">Второй объект</param>
         /// <returns>Результат сравнения</returns>
-        public int CompareObjects(object a, object b)
+        private int CompareObjects(object a, object b)
         {
             if (a == null && b == null) return 0;
             if (a == null) return -1;

@@ -40,10 +40,5 @@ namespace WpfAppSorter.Interfaces
         /// </summary>
         /// <returns>Список путей к файлам</returns>
         List<string> GetTrackedFiles();
-
-        /// <summary>
-        /// Очищает список отслеживаемых файлов
-        /// </summary>
-        void ClearTrackedFiles();
     }
 }

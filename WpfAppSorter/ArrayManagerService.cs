@@ -152,22 +152,7 @@ namespace WpfAppSorter.Services
 
             try
             {
-                if (_dataType == typeof(int))
-                {
-                    return int.Parse(input);
-                }
-                else if (_dataType == typeof(float))
-                {
-                    return float.Parse(input);
-                }
-                else if (_dataType == typeof(DateTime))
-                {
-                    return DateTime.Parse(input);
-                }
-                else
-                {
-                    throw new ArgumentException($"Неподдерживаемый тип данных: {_dataType.Name}");
-                }
+                return ClassLibrarySorter.ValueParser.ParseValue(input, _dataType);
             }
             catch (FormatException ex)
             {

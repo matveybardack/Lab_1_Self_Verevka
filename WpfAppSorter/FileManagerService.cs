@@ -14,6 +14,7 @@ namespace WpfAppSorter.Services
     public class FileManagerService : IFileManagerService
     {
         private readonly DirectoryViewer _directoryViewer;
+        private readonly List<string> _trackedFiles = new List<string>();
 
         /// <summary>
         /// Конструктор
@@ -30,13 +31,11 @@ namespace WpfAppSorter.Services
         /// <param name="filePath">Путь к файлу</param>
         public void SaveArrayToFile(List<object> array, string filePath)
         {
-            if (array == null)
-                throw new ArgumentNullException(nameof(array));
-
-            if (string.IsNullOrEmpty(filePath))
-                throw new ArgumentException("Путь к файлу не может быть пустым", nameof(filePath));
-
             _directoryViewer.SaveArrayToFile(array, filePath);
+            if (!_trackedFiles.Contains(filePath))
+            {
+                _trackedFiles.Add(filePath);
+            }
         }
 
         /// <summary>
@@ -47,13 +46,12 @@ namespace WpfAppSorter.Services
         /// <returns>Загруженный массив</returns>
         public List<object> LoadArrayFromFile(string filePath, Type dataType)
         {
-            if (string.IsNullOrEmpty(filePath))
-                throw new ArgumentException("Путь к файлу не может быть пустым", nameof(filePath));
-
-            if (dataType == null)
-                throw new ArgumentNullException(nameof(dataType));
-
-            return _directoryViewer.LoadArrayFromFile(filePath, dataType);
+            var result = _directoryViewer.LoadArrayFromFile(filePath, dataType);
+            if (!_trackedFiles.Contains(filePath))
+            {
+                _trackedFiles.Add(filePath);
+            }
+            return result;
         }
 
         /// <summary>
@@ -65,7 +63,10 @@ namespace WpfAppSorter.Services
             if (string.IsNullOrEmpty(filePath))
                 throw new ArgumentException("Путь к файлу не может быть пустым", nameof(filePath));
 
-            _directoryViewer.AddFile(filePath);
+            if (!_trackedFiles.Contains(filePath))
+            {
+                _trackedFiles.Add(filePath);
+            }
         }
 
         /// <summary>
@@ -77,7 +78,7 @@ namespace WpfAppSorter.Services
             if (string.IsNullOrEmpty(filePath))
                 throw new ArgumentException("Путь к файлу не может быть пустым", nameof(filePath));
 
-            _directoryViewer.RemoveFile(filePath);
+            _trackedFiles.Remove(filePath);
         }
 
         /// <summary>
@@ -86,15 +87,7 @@ namespace WpfAppSorter.Services
         /// <returns>Список путей к файлам</returns>
         public List<string> GetTrackedFiles()
         {
-            return _directoryViewer.GetTrackedFiles();
-        }
-
-        /// <summary>
-        /// Очищает список отслеживаемых файлов
-        /// </summary>
-        public void ClearTrackedFiles()
-        {
-            _directoryViewer.ClearTrackedFiles();
+            return new List<string>(_trackedFiles);
         }
     }
 }

@@ -42,6 +42,5 @@ namespace WpfAppSorter.Interfaces
         /// <param name="a">Первый объект</param>
         /// <param name="b">Второй объект</param>
         /// <returns>Результат сравнения</returns>
-        int CompareObjects(object a, object b);
     }
 }

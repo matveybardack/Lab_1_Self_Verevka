@@ -8,22 +8,20 @@
 
 ```
 WpfAppSorter/
-├── Interfaces/           # Интерфейсы для взаимодействия с библиотекой
-│   ├── IArrayManagerService.cs
-│   ├── IArraySorterService.cs
-│   └── IFileManagerService.cs
-├── Models/              # Модели данных
-│   └── ArrayDataTypes.cs
-├── Services/            # Сервисы (реализации интерфейсов)
-│   ├── ArrayManagerService.cs
-│   ├── ArraySorterService.cs
-│   └── FileManagerService.cs
-├── MainWindow.xaml      # UI интерфейс
-└── MainWindow.xaml.cs   # Код-behind (только обработка UI событий)
+├── IArrayManagerService.cs   # Интерфейсы находятся в корне
+├── IArraySorterService.cs
+├── IFileManagerService.cs
+├── ArrayDataTypes.cs         # Модель и утилиты по типам
+├── ArrayManagerService.cs    # Реализации сервисов находятся в корне
+├── ArraySorterService.cs
+├── FileManagerService.cs
+├── MainWindow.xaml           # UI интерфейс
+└── MainWindow.xaml.cs        # Код-behind (только обработка UI событий)
 
-ClassLibrarySorter/      # Библиотека классов
-├── ArraySorter.cs       # Алгоритмы сортировки
-└── DirectoryViewer.cs   # Работа с файлами
+ClassLibrarySorter/          # Библиотека классов
+├── ArraySorter.cs           # Алгоритмы сортировки
+├── DirectoryViewer.cs       # Работа с файлами (без tracking и без парсинга)
+└── ValueParser.cs           # Единый парсер значений для типов
 ```
 
 ## Принципы архитектуры
@@ -38,10 +36,11 @@ ClassLibrarySorter/      # Библиотека классов
 - Сервисы реализуют интерфейсы и используют библиотеку классов
 
 ### 3. Единственная ответственность (Single Responsibility Principle)
-- `ArraySorter` - только алгоритмы сортировки
-- `DirectoryViewer` - только работа с файлами
-- `ArrayManagerService` - только управление массивом
-- `FileManagerService` - только управление файлами
+- `ArraySorter` — алгоритмы сортировки
+- `DirectoryViewer` — чтение/запись файлов без хранения состояния
+- `ValueParser` — единый парсинг значений по типам
+- `ArrayManagerService` — управление массивом и валидация ввода
+- `FileManagerService` — сохранение/загрузка и централизованный tracking файлов
 
 ## Компоненты системы
 
@@ -50,7 +49,7 @@ ClassLibrarySorter/      # Библиотека классов
 #### IArrayManagerService
 - Управление массивом (добавление, удаление, очистка)
 - Контроль состояния инициализации
-- Парсинг элементов по типу данных
+- Парсинг элементов через `ValueParser`
 
 #### IArraySorterService
 - Алгоритмы сортировки (пузырьковая, выбором, вставками, быстрая)
@@ -58,14 +57,14 @@ ClassLibrarySorter/      # Библиотека классов
 
 #### IFileManagerService
 - Сохранение и загрузка массивов
-- Управление списком отслеживаемых файлов
+- Централизованное управление списком отслеживаемых файлов
 
 ### Модели данных (Models)
 
 #### ArrayDataTypes
 - Перечисление типов данных (Integer, Float, DateTime)
 - Вспомогательные методы для работы с типами
-- Парсинг значений
+- Делегирует парсинг `ValueParser`
 
 ### Сервисы (Services)
 
@@ -92,7 +91,7 @@ ClassLibrarySorter/      # Библиотека классов
 #### DirectoryViewer
 - Работа с файловой системой
 - Сохранение и загрузка массивов
-- Отслеживание файлов
+- Не содержит логики отслеживания и парсинга (делегирует `ValueParser`)
 
 ## Поток данных
 
@@ -133,8 +132,8 @@ ClassLibrarySorter/      # Библиотека классов
 
 ### Добавление нового типа данных
 1. Добавить значение в `ArrayDataType` (модель)
-2. Обновить методы в `ArrayDataTypes` (модель)
-3. Добавить парсинг в `DirectoryViewer` (библиотека классов)
+2. Обновить отображение подсказок в `ArrayDataTypes`
+3. Добавить поддержку в `ValueParser`
 4. Добавить UI элемент для выбора типа данных
 
 ## Заключение

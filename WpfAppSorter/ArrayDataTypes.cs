@@ -65,17 +65,8 @@ namespace WpfAppSorter.Models
         /// <returns>Распарсенный объект</returns>
         public static object ParseValue(string input, ArrayDataType dataType)
         {
-            switch (dataType)
-            {
-                case ArrayDataType.Integer:
-                    return int.Parse(input);
-                case ArrayDataType.Float:
-                    return float.Parse(input);
-                case ArrayDataType.DateTime:
-                    return DateTime.Parse(input);
-                default:
-                    throw new ArgumentException($"Неподдерживаемый тип данных: {dataType}");
-            }
+            var netType = GetNetType(dataType);
+            return ClassLibrarySorter.ValueParser.ParseValue(input, netType);
         }
     }
 }
