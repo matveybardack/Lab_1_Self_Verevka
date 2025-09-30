@@ -51,7 +51,7 @@ namespace WpfAppSorter.Models
                 case ArrayDataType.Float:
                     return "Введите дробное число";
                 case ArrayDataType.DateTime:
-                    return "Введите дату (например: 01.01.2024)";
+                    return "Введите дату (например: 21.12.2012)";
                 default:
                     return "Введите значение";
             }

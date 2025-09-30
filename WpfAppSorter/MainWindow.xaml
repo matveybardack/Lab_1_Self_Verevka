@@ -1,242 +1,377 @@
 ﻿<Window x:Class="WpfAppSorter.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Сортировщик массивов" Height="800" Width="1200"
+        Title="Сортировщик массивов"
+        Height="800"
+        Width="1200"
         WindowStartupLocation="CenterScreen"
         Background="#F5F5F5">
-    
+
     <Window.Resources>
-        <!-- Стили для приложения -->
-        <Style x:Key="TabItemStyle" TargetType="TabItem">
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Padding" Value="15,10"/>
-            <Setter Property="Background" Value="#E8E8E8"/>
-            <Setter Property="BorderBrush" Value="#CCCCCC"/>
-            <Setter Property="BorderThickness" Value="1"/>
+        <!-- Стили -->
+        <Style x:Key="TabItemStyle"
+               TargetType="TabItem">
+            <Setter Property="FontSize"
+                    Value="14" />
+            <Setter Property="FontWeight"
+                    Value="SemiBold" />
+            <Setter Property="Padding"
+                    Value="15,10" />
+            <Setter Property="Background"
+                    Value="#E8E8E8" />
+            <Setter Property="BorderBrush"
+                    Value="#CCCCCC" />
+            <Setter Property="BorderThickness"
+                    Value="1" />
         </Style>
-        
-        <Style x:Key="ButtonStyle" TargetType="Button">
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Padding" Value="10,5"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Background" Value="#4CAF50"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
+
+        <Style x:Key="ButtonStyle"
+               TargetType="Button">
+            <Setter Property="FontSize"
+                    Value="12" />
+            <Setter Property="Padding"
+                    Value="10,5" />
+            <Setter Property="Margin"
+                    Value="5" />
+            <Setter Property="Background"
+                    Value="#4CAF50" />
+            <Setter Property="Foreground"
+                    Value="White" />
+            <Setter Property="BorderThickness"
+                    Value="0" />
         </Style>
-        
-        <Style x:Key="GroupBoxStyle" TargetType="GroupBox">
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Margin" Value="10"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="BorderBrush" Value="#CCCCCC"/>
-            <Setter Property="BorderThickness" Value="1"/>
+
+        <Style x:Key="GroupBoxStyle"
+               TargetType="GroupBox">
+            <Setter Property="FontSize"
+                    Value="12" />
+            <Setter Property="FontWeight"
+                    Value="Bold" />
+            <Setter Property="Margin"
+                    Value="10" />
+            <Setter Property="Padding"
+                    Value="10" />
+            <Setter Property="BorderBrush"
+                    Value="#CCCCCC" />
+            <Setter Property="BorderThickness"
+                    Value="1" />
         </Style>
     </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- Меню -->
-        <Menu Grid.Row="0" Background="#2C3E50" Foreground="White">
-            <MenuItem Header="Файл">
-                <MenuItem Header="Сохранить в файл" Name="SaveMenuItem" Click="SaveMenuItem_Click"/>
-                <MenuItem Header="Загрузить из файла" Name="LoadMenuItem" Click="LoadMenuItem_Click"/>
-                <Separator/>
-                <MenuItem Header="Выход" Click="ExitMenuItem_Click"/>
+        <Menu Grid.Row="0"
+              Background="#2C3E50"
+              Foreground="White">
+            <MenuItem Header="Меню">
+                <MenuItem Header="Сохранить в файл"
+                          Name="SaveMenuItem"
+                          Click="SaveMenuItem_Click"
+                          Foreground="Black" />
+                <MenuItem Header="Загрузить из файла"
+                          Name="LoadMenuItem"
+                          Click="LoadMenuItem_Click"
+                          Foreground="Black" />
+
+                <MenuItem Header="Выход"
+                          Name="ExitMenuItem"
+                          Click="ExitMenuItem_Click"
+                          Foreground="Black" />
             </MenuItem>
             <MenuItem Header="Помощь">
-                <MenuItem Header="О программе" Click="AboutMenuItem_Click"/>
+                <MenuItem Header="О программе"
+                          Click="AboutMenuItem_Click"
+                          Foreground="Black" />
             </MenuItem>
         </Menu>
 
         <!-- ToolBar -->
-        <ToolBar Grid.Row="1" Background="#34495E" Foreground="White" Height="40">
-            <TextBlock Name="CurrentTabTitle" Text="Добро пожаловать в сортировщик массивов" 
-                       FontSize="14" FontWeight="Bold" Margin="10,0"/>
-            <Separator/>
-            <Button Name="HelpButton" Content="?" Width="30" Height="30" 
-                    Background="#3498DB" Foreground="White" FontWeight="Bold"
-                    Click="HelpButton_Click"/>
+        <ToolBar Grid.Row="1"
+                 Background="#34495E"
+                 Foreground="White"
+                 Height="40">
+            <TextBlock Name="CurrentTabTitle"
+                       Text="Добро пожаловать в сортировщик массивов"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       Margin="10,0" />
+            <Separator />
+            <Button Name="HelpButton"
+                    Content="?"
+                    Width="30"
+                    Height="30"
+                    Background="#3498DB"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    Click="HelpButton_Click" />
         </ToolBar>
 
         <!-- Popup для подсказок -->
-        <Popup Name="HelpPopup" Placement="Bottom" PlacementTarget="{Binding ElementName=HelpButton}" 
-               IsOpen="False" AllowsTransparency="True">
-            <Border Background="White" BorderBrush="#CCCCCC" BorderThickness="1" 
-                    CornerRadius="5" Padding="10" MaxWidth="300">
-                <TextBlock Name="HelpText" Text="Выберите вкладку для получения подсказки" 
-                           TextWrapping="Wrap" Foreground="#333333"/>
+        <Popup Name="HelpPopup"
+               Placement="Bottom"
+               PlacementTarget="{Binding ElementName=HelpButton}"
+               IsOpen="False"
+               AllowsTransparency="True">
+            <Border Background="White"
+                    BorderBrush="#CCCCCC"
+                    BorderThickness="1"
+                    CornerRadius="5"
+                    Padding="10"
+                    MaxWidth="300">
+                <TextBlock Name="HelpText"
+                           Text="Выберите вкладку для получения подсказки"
+                           TextWrapping="Wrap"
+                           Foreground="#333333" />
             </Border>
         </Popup>
 
         <!-- Основной контент с вкладками -->
-        <TabControl Grid.Row="2" Name="MainTabControl" 
+        <TabControl Grid.Row="2"
+                    Name="MainTabControl"
                     SelectionChanged="MainTabControl_SelectionChanged"
-                    Background="White" Margin="10">
-            
+                    Background="White"
+                    Margin="10">
+
             <!-- Вкладка 1: Тип данных -->
-            <TabItem Header="Тип данных" Style="{StaticResource TabItemStyle}">
+            <TabItem Header="Тип данных"
+                     Style="{StaticResource TabItemStyle}">
                 <Grid Margin="20">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    
-                    <GroupBox Header="Выбор типа данных" Grid.Row="0" Style="{StaticResource GroupBoxStyle}">
-                        <StackPanel Orientation="Vertical" Margin="10">
-                            <RadioButton Name="IntRadioButton" Content="Целочисленный (int)" 
-                                        IsChecked="True" Margin="5" Checked="RadioButton_Checked"/>
-                            <RadioButton Name="FloatRadioButton" Content="Дробный (float)" 
-                                        Margin="5" Checked="RadioButton_Checked"/>
-                            <RadioButton Name="DateTimeRadioButton" Content="Дата (DateTime)" 
-                                        Margin="5" Checked="RadioButton_Checked"/>
+
+                    <GroupBox Header="Выбор типа данных"
+                              Grid.Row="0"
+                              Style="{StaticResource GroupBoxStyle}">
+                        <StackPanel Orientation="Vertical"
+                                    Margin="10">
+                            <RadioButton Name="IntRadioButton"
+                                         Content="Целочисленный (int)"
+                                         IsChecked="True"
+                                         Margin="5"
+                                         Checked="RadioButton_Checked" />
+                            <RadioButton Name="FloatRadioButton"
+                                         Content="Дробный (float)"
+                                         Margin="5"
+                                         Checked="RadioButton_Checked" />
+                            <RadioButton Name="DateTimeRadioButton"
+                                         Content="Дата (DateTime)"
+                                         Margin="5"
+                                         Checked="RadioButton_Checked" />
                         </StackPanel>
                     </GroupBox>
-                    
-                    <TextBlock Grid.Row="1" Text="Выберите тип данных для работы с массивом. После выбора перейдите на вкладку 'Массив' для инициализации." 
-                               FontSize="14" TextWrapping="Wrap" VerticalAlignment="Center" 
-                               HorizontalAlignment="Center" Foreground="#666666"/>
+
+                    <TextBlock Grid.Row="1"
+                               Text="Выберите тип данных для работы с массивом. После выбора перейдите на вкладку 'Массив' для инициализации."
+                               FontSize="14"
+                               TextWrapping="Wrap"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Foreground="#666666" />
                 </Grid>
             </TabItem>
 
             <!-- Вкладка 2: Массив -->
-            <TabItem Header="Массив" Style="{StaticResource TabItemStyle}">
+            <TabItem Header="Массив"
+                     Style="{StaticResource TabItemStyle}">
                 <Grid Margin="20">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    
+
                     <!-- Размер массива -->
-                    <GroupBox Header="Размер массива" Grid.Row="0" Style="{StaticResource GroupBoxStyle}">
-                        <StackPanel Orientation="Vertical" Margin="10">
-                            <TextBlock Text="Размер массива:" Margin="0,0,0,5"/>
-                            <Slider Name="ArraySizeSlider" Minimum="1" Maximum="20" Value="5" 
-                                    TickFrequency="1" IsSnapToTickEnabled="True" 
-                                    ValueChanged="ArraySizeSlider_ValueChanged"/>
-                            <TextBlock Name="ArraySizeLabel" Text="Размер: 5" 
-                                       HorizontalAlignment="Center" Margin="0,5"/>
+                    <GroupBox Header="Размер массива"
+                              Grid.Row="0"
+                              Style="{StaticResource GroupBoxStyle}">
+                        <StackPanel Orientation="Vertical"
+                                    Margin="10">
+                            <TextBlock Text="Размер массива:"
+                                       Margin="0,0,0,5" />
+                            <Slider Name="ArraySizeSlider"
+                                    Minimum="1"
+                                    Maximum="20"
+                                    Value="5"
+                                    TickFrequency="1"
+                                    IsSnapToTickEnabled="True"
+                                    ValueChanged="ArraySizeSlider_ValueChanged" />
+                            <TextBlock Name="ArraySizeLabel"
+                                       Text="Размер: 5"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,5" />
                         </StackPanel>
                     </GroupBox>
-                    
+
                     <!-- Ввод элементов -->
-                    <GroupBox Header="Элементы массива" Grid.Row="1" Style="{StaticResource GroupBoxStyle}">
+                    <GroupBox Header="Элементы массива"
+                              Grid.Row="1"
+                              Style="{StaticResource GroupBoxStyle}">
                         <Grid Margin="10">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            
+
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="Введите элемент:" Margin="0,0,0,5"/>
-                                <TextBox Name="ElementInput" Padding="5" 
-                                         KeyDown="ElementInput_KeyDown"/>
-                                <TextBlock Name="InputHint" Text="Введите целое число" 
-                                           FontSize="10" Foreground="#666666" Margin="0,2"/>
+                                <TextBlock Text="Введите элемент:"
+                                           Margin="0,0,0,5" />
+                                <TextBox Name="ElementInput"
+                                         Padding="5"
+                                         KeyDown="ElementInput_KeyDown" />
+                                <TextBlock Name="InputHint"
+                                           Text="Введите целое число"
+                                           FontSize="10"
+                                           Foreground="#666666"
+                                           Margin="0,2" />
                             </StackPanel>
-                            
-                            <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Margin="10,0,0,0">
-                                <Button Name="AddElementButton" Content="Добавить" 
-                                        Style="{StaticResource ButtonStyle}" 
-                                        Click="AddElementButton_Click"/>
-                                <Button Name="RemoveElementButton" Content="Удалить" 
-                                        Background="#E74C3C" Foreground="White" Margin="5" 
-                                        Click="RemoveElementButton_Click"/>
-                                <Button Name="ClearArrayButton" Content="Очистить" 
-                                        Background="#F39C12" Foreground="White" Margin="5" 
-                                        Click="ClearArrayButton_Click"/>
+
+                            <StackPanel Grid.Column="1"
+                                        VerticalAlignment="Bottom"
+                                        Margin="10,0,0,0">
+                                <Button Name="AddElementButton"
+                                        Content="Добавить"
+                                        Style="{StaticResource ButtonStyle}"
+                                        Click="AddElementButton_Click" />
+                                <Button Name="RemoveElementButton"
+                                        Content="Удалить"
+                                        Background="#E74C3C"
+                                        Foreground="White"
+                                        Margin="5"
+                                        Click="RemoveElementButton_Click" />
+                                <Button Name="ClearArrayButton"
+                                        Content="Очистить"
+                                        Background="#F39C12"
+                                        Foreground="White"
+                                        Margin="5"
+                                        Click="ClearArrayButton_Click" />
                             </StackPanel>
                         </Grid>
                     </GroupBox>
-                    
+
                     <!-- Отображение массива -->
-                    <GroupBox Header="Текущий массив" Grid.Row="2" Style="{StaticResource GroupBoxStyle}">
-                        <ScrollViewer Margin="10" VerticalScrollBarVisibility="Auto">
-                            <TextBlock Name="ArrayDisplay" Text="Массив пуст" 
-                                       TextWrapping="Wrap" 
-                                       Padding="5" Background="#F8F9FA"/>
+                    <GroupBox Header="Текущий массив"
+                              Grid.Row="2"
+                              Style="{StaticResource GroupBoxStyle}">
+                        <ScrollViewer Margin="10"
+                                      VerticalScrollBarVisibility="Auto">
+                            <TextBlock Name="ArrayDisplay"
+                                       Text="Массив пуст"
+                                       TextWrapping="Wrap"
+                                       Padding="5"
+                                       Background="#F8F9FA" />
                         </ScrollViewer>
                     </GroupBox>
                 </Grid>
             </TabItem>
 
             <!-- Вкладка 3: Сортировки -->
-            <TabItem Header="Сортировки" Style="{StaticResource TabItemStyle}">
+            <TabItem Header="Сортировки"
+                     Style="{StaticResource TabItemStyle}">
                 <Grid Margin="20">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    
+
                     <!-- Выбор сортировки -->
-                    <GroupBox Header="Выбор алгоритма сортировки" Grid.Row="0" Style="{StaticResource GroupBoxStyle}">
+                    <GroupBox Header="Выбор алгоритма сортировки"
+                              Grid.Row="0"
+                              Style="{StaticResource GroupBoxStyle}">
                         <StackPanel Margin="10">
-                            <RadioButton Name="BubbleSortRadio" Content="Пузырьковая сортировка" 
-                                        IsChecked="True" Margin="5"/>
-                            <RadioButton Name="SelectionSortRadio" Content="Сортировка выбором" 
-                                        Margin="5"/>
-                            <RadioButton Name="InsertionSortRadio" Content="Сортировка вставками" 
-                                        Margin="5"/>
-                            <RadioButton Name="QuickSortRadio" Content="Быстрая сортировка" 
-                                        Margin="5"/>
-                            
-                            <Button Name="SortButton" Content="Выполнить сортировку" 
-                                    Style="{StaticResource ButtonStyle}" 
-                                    Margin="10,10,0,0" Click="SortButton_Click"/>
+                            <RadioButton Name="BubbleSortRadio"
+                                         Content="Пузырьковая сортировка"
+                                         IsChecked="True"
+                                         Margin="5" />
+                            <RadioButton Name="SelectionSortRadio"
+                                         Content="Сортировка выбором"
+                                         Margin="5" />
+                            <RadioButton Name="InsertionSortRadio"
+                                         Content="Сортировка вставками"
+                                         Margin="5" />
+                            <RadioButton Name="QuickSortRadio"
+                                         Content="Быстрая сортировка"
+                                         Margin="5" />
+
+                            <Button Name="SortButton"
+                                    Content="Выполнить сортировку"
+                                    Style="{StaticResource ButtonStyle}"
+                                    Margin="10,10,0,0"
+                                    Click="SortButton_Click" />
                         </StackPanel>
                     </GroupBox>
-                    
+
                     <!-- Результат сортировки -->
-                    <GroupBox Header="Результат сортировки" Grid.Row="1" Style="{StaticResource GroupBoxStyle}">
-                        <ScrollViewer Margin="10" VerticalScrollBarVisibility="Auto">
-                            <TextBlock Name="SortResultDisplay" Text="Выберите алгоритм сортировки и нажмите кнопку" 
-                                       TextWrapping="Wrap" 
-                                       Padding="5" Background="#F8F9FA"/>
+                    <GroupBox Header="Результат сортировки"
+                              Grid.Row="1"
+                              Style="{StaticResource GroupBoxStyle}">
+                        <ScrollViewer Margin="10"
+                                      VerticalScrollBarVisibility="Auto">
+                            <TextBlock Name="SortResultDisplay"
+                                       Text="Выберите алгоритм сортировки и нажмите кнопку"
+                                       TextWrapping="Wrap"
+                                       Padding="5"
+                                       Background="#F8F9FA" />
                         </ScrollViewer>
                     </GroupBox>
                 </Grid>
             </TabItem>
 
             <!-- Вкладка 4: Файлы -->
-            <TabItem Header="Файлы" Style="{StaticResource TabItemStyle}">
+            <TabItem Header="Файлы"
+                     Style="{StaticResource TabItemStyle}">
                 <Grid Margin="20">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    
+
                     <!-- Кнопки управления файлами -->
-                    <GroupBox Header="Управление файлами" Grid.Row="0" Style="{StaticResource GroupBoxStyle}">
-                        <StackPanel Orientation="Horizontal" Margin="10">
-                            <Button Name="AddFileButton" Content="Добавить файл" 
-                                    Style="{StaticResource ButtonStyle}" 
-                                    Click="AddFileButton_Click"/>
-                            <Button Name="RemoveFileButton" Content="Удалить файл" 
-                                    Background="#E74C3C" Foreground="White" Margin="5" 
-                                    Click="RemoveFileButton_Click"/>
-                            <Button Name="RefreshFilesButton" Content="Обновить" 
-                                    Background="#3498DB" Foreground="White" Margin="5" 
-                                    Click="RefreshFilesButton_Click"/>
+                    <GroupBox Header="Управление файлами"
+                              Grid.Row="0"
+                              Style="{StaticResource GroupBoxStyle}">
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="10">
+                            <Button Name="AddFileButton"
+                                    Content="Добавить файл"
+                                    Style="{StaticResource ButtonStyle}"
+                                    Click="AddFileButton_Click" />
+                            <Button Name="RemoveFileButton"
+                                    Content="Удалить файл"
+                                    Background="#E74C3C"
+                                    Foreground="White"
+                                    Margin="5"
+                                    Click="RemoveFileButton_Click" />
+                            <Button Name="RefreshFilesButton"
+                                    Content="Обновить"
+                                    Background="#3498DB"
+                                    Foreground="White"
+                                    Margin="5"
+                                    Click="RefreshFilesButton_Click" />
                         </StackPanel>
                     </GroupBox>
-                    
+
                     <!-- Дерево файлов -->
-                    <GroupBox Header="Список файлов" Grid.Row="1" Style="{StaticResource GroupBoxStyle}">
-                        <TreeView Name="FilesTreeView" Margin="10" 
-                                 ContextMenuOpening="FilesTreeView_ContextMenuOpening">
+                    <GroupBox Header="Список файлов"
+                              Grid.Row="1"
+                              Style="{StaticResource GroupBoxStyle}">
+                        <TreeView Name="FilesTreeView"
+                                  Margin="10">
                             <TreeView.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Header="Открыть файл" Name="OpenFileMenuItem" 
-                                              Click="OpenFileMenuItem_Click"/>
-                                    <MenuItem Header="Удалить из списка" Name="RemoveFromListMenuItem" 
-                                              Click="RemoveFromListMenuItem_Click"/>
+                                    <MenuItem Header="Открыть файл"
+                                              Name="OpenFileMenuItem"
+                                              Click="OpenFileMenuItem_Click" />
+                                    <MenuItem Header="Удалить из списка"
+                                              Name="RemoveFromListMenuItem"
+                                              Click="RemoveFromListMenuItem_Click" />
                                 </ContextMenu>
                             </TreeView.ContextMenu>
                         </TreeView>

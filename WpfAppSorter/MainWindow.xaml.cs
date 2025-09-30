@@ -130,7 +130,7 @@ namespace WpfAppSorter
 
         private void AboutMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Сортировщик массивов v1.0\n\nПриложение для работы с массивами различных типов данных и их сортировки.",
+            MessageBox.Show("Сортировщик массивов\n\nПриложение для работы с массивами различных типов данных и их сортировки.",
                           "О программе", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
@@ -174,7 +174,7 @@ namespace WpfAppSorter
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            UpdateInputHint();
+            UpdateInputHint(); 
         }
 
         private void UpdateInputHint()
@@ -451,10 +451,7 @@ namespace WpfAppSorter
             }
         }
 
-        private void FilesTreeView_ContextMenuOpening(object sender, ContextMenuEventArgs e)
-        {
-            // Логика для контекстного меню
-        }
+        
 
         private void OpenFileMenuItem_Click(object sender, RoutedEventArgs e)
         {
