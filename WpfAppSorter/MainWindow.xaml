@@ -339,10 +339,10 @@
                               Style="{StaticResource GroupBoxStyle}">
                         <StackPanel Orientation="Horizontal"
                                     Margin="10">
-                            <Button Name="AddFileButton"
-                                    Content="Добавить файл"
+                            <Button Name="LoadFromFileButton"
+                                    Content="Загрузить из файла"
                                     Style="{StaticResource ButtonStyle}"
-                                    Click="AddFileButton_Click" />
+                                    Click="LoadFromFileButton_Click" />
                             <Button Name="RemoveFileButton"
                                     Content="Удалить файл"
                                     Background="#E74C3C"

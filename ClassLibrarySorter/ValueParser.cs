@@ -30,7 +30,12 @@ namespace ClassLibrarySorter
                 }
                 else if (dataType == typeof(DateTime))
                 {
-                    return DateTime.Parse(value);
+                    string[] formats = { "dd.MM.yyyy", "d.M.yyyy", "yyyy-MM-dd" };
+
+                    return DateTime.ParseExact(value, formats,
+                        System.Globalization.CultureInfo.InvariantCulture,
+                        System.Globalization.DateTimeStyles.None);
+
                 }
                 else
                 {

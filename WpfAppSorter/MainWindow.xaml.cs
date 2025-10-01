@@ -111,6 +111,7 @@ namespace WpfAppSorter
                     }
 
                     UpdateArrayDisplay();
+                    UpdateUIState();
                     AddFileToTree(openDialog.FileName);
                     MessageBox.Show("Массив успешно загружен из файла.", "Успех",
                                   MessageBoxButton.OK, MessageBoxImage.Information);
@@ -385,24 +386,40 @@ namespace WpfAppSorter
 
         #region Обработчики событий вкладки "Файлы"
 
-        private void AddFileButton_Click(object sender, RoutedEventArgs e)
+        private void LoadFromFileButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                OpenFileDialog openDialog = new OpenFileDialog
+                if (FilesTreeView.SelectedItem is TreeViewItem selectedItem)
                 {
-                    Filter = "Все файлы (*.*)|*.*"
-                };
+                    string filePath = selectedItem.Tag?.ToString();
+                    if (!string.IsNullOrEmpty(filePath))
+                    {
+                        Type dataType = ArrayDataTypes.GetNetType(_currentDataType);
+                        var loadedArray = _fileManagerService.LoadArrayFromFile(filePath, dataType);
 
-                if (openDialog.ShowDialog() == true)
+                        // Очищаем текущий массив и добавляем загруженные элементы
+                        _arrayManagerService.ClearArray();
+                        foreach (var element in loadedArray)
+                        {
+                            _arrayManagerService.AddElement(element);
+                        }
+
+                        UpdateArrayDisplay();
+
+                        MessageBox.Show("Массив успешно загружен из файла.", "Успех",
+                                      MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
+                else
                 {
-                    _fileManagerService.AddFile(openDialog.FileName);
-                    AddFileToTree(openDialog.FileName);
+                    MessageBox.Show("Выберите файл для загрузки.", "Предупреждение",
+                                  MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при добавлении файла: {ex.Message}", "Ошибка",
+                MessageBox.Show($"Ошибка при загрузке файла: {ex.Message}", "Ошибка",
                               MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
