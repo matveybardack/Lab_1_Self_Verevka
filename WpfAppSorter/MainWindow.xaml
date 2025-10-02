@@ -5,7 +5,7 @@
         Height="800"
         Width="1200"
         WindowStartupLocation="CenterScreen"
-        Background="#F5F5F5">
+        Background="#FFE3B1B1">
 
     <Window.Resources>
         <!-- Стили -->
@@ -18,7 +18,7 @@
             <Setter Property="Padding"
                     Value="15,10" />
             <Setter Property="Background"
-                    Value="#E8E8E8" />
+                    Value="#FFBBC1E6" />
             <Setter Property="BorderBrush"
                     Value="#CCCCCC" />
             <Setter Property="BorderThickness"
@@ -135,7 +135,7 @@
         <TabControl Grid.Row="2"
                     Name="MainTabControl"
                     SelectionChanged="MainTabControl_SelectionChanged"
-                    Background="White"
+                    Background="#FFBBC1E6"
                     Margin="10">
 
             <!-- Вкладка 1: Тип данных -->

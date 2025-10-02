@@ -107,6 +107,11 @@
       <Name>ClassLibrarySorter</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="UIPicture.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="r_image.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
