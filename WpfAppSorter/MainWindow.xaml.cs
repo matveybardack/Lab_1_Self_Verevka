@@ -25,21 +25,21 @@ namespace WpfAppSorter
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly IArrayManagerService _arrayManagerService;
-        private readonly IArraySorterService _arraySorterService;
-        private readonly IFileManagerService _fileManagerService;
-        private ArrayDataType _currentDataType;
+        private readonly IArrayManagerService arrayManagerService;
+        private readonly IArraySorterService arraySorterService;
+        private readonly IFileManagerService fileManagerService;
+        private ArrayDataType currentDataType;
 
         public MainWindow()
         {
             InitializeComponent();
 
             // Инициализация сервисов
-            _arrayManagerService = new ArrayManagerService();
-            _arraySorterService = new ArraySorterService();
-            _fileManagerService = new FileManagerService();
+            arrayManagerService = new ArrayManagerService();
+            arraySorterService = new ArraySorterService();
+            fileManagerService = new FileManagerService();
 
-            _currentDataType = ArrayDataType.Integer;
+            currentDataType = ArrayDataType.Integer;
 
             // Проверяем, что все элементы XAML инициализированы
             if (InputHint != null && ArrayDisplay != null)
@@ -49,7 +49,7 @@ namespace WpfAppSorter
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("Some XAML elements are not initialized properly!");
+                System.Diagnostics.Debug.WriteLine("Ошибка загрузки окна!");
             }
         }
 
@@ -59,7 +59,7 @@ namespace WpfAppSorter
         {
             try
             {
-                if (_arrayManagerService.CurrentArray.Count == 0)
+                if (arrayManagerService.CurrentArray.Count == 0)
                 {
                     MessageBox.Show("Массив пуст. Нечего сохранять.", "Предупреждение",
                                   MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -74,7 +74,7 @@ namespace WpfAppSorter
 
                 if (saveDialog.ShowDialog() == true)
                 {
-                    _fileManagerService.SaveArrayToFile(_arrayManagerService.CurrentArray, saveDialog.FileName);
+                    fileManagerService.SaveArrayToFile(arrayManagerService.CurrentArray, saveDialog.FileName);
                     MessageBox.Show("Массив успешно сохранен в файл.", "Успех",
                                   MessageBoxButton.OK, MessageBoxImage.Information);
 
@@ -100,19 +100,20 @@ namespace WpfAppSorter
 
                 if (openDialog.ShowDialog() == true)
                 {
-                    Type dataType = ArrayDataTypes.GetNetType(_currentDataType);
-                    var loadedArray = _fileManagerService.LoadArrayFromFile(openDialog.FileName, dataType);
+                    Type dataType = ArrayDataTypes.GetNetType(currentDataType);
+                    var loadedArray = fileManagerService.LoadArrayFromFile(openDialog.FileName, dataType);
 
                     // Очищаем текущий массив и добавляем загруженные элементы
-                    _arrayManagerService.ClearArray();
+                    arrayManagerService.ClearArray();
                     foreach (var element in loadedArray)
                     {
-                        _arrayManagerService.AddElement(element);
+                        arrayManagerService.AddElement(element);
                     }
 
                     UpdateArrayDisplay();
                     UpdateUIState();
                     AddFileToTree(openDialog.FileName);
+                    AddElementButton.IsEnabled = false; //временная заглушка 
                     MessageBox.Show("Массив успешно загружен из файла.", "Успех",
                                   MessageBoxButton.OK, MessageBoxImage.Information);
                 }
@@ -183,27 +184,27 @@ namespace WpfAppSorter
             // Проверяем, что элемент InputHint инициализирован
             if (InputHint == null)
             {
-                System.Diagnostics.Debug.WriteLine("InputHint is null! XAML may not be properly initialized.");
+                System.Diagnostics.Debug.WriteLine("Ошибка при инициализации поля ввода массива.");
                 return;
             }
 
             if (IntRadioButton.IsChecked == true)
             {
-                _currentDataType = ArrayDataType.Integer;
-                InputHint.Text = ArrayDataTypes.GetInputHint(_currentDataType);
-                _arrayManagerService.DataType = ArrayDataTypes.GetNetType(_currentDataType);
+                currentDataType = ArrayDataType.Integer;
+                InputHint.Text = ArrayDataTypes.GetInputHint(currentDataType);
+                arrayManagerService.DataType = ArrayDataTypes.GetNetType(currentDataType);
             }
             else if (FloatRadioButton.IsChecked == true)
             {
-                _currentDataType = ArrayDataType.Float;
-                InputHint.Text = ArrayDataTypes.GetInputHint(_currentDataType);
-                _arrayManagerService.DataType = ArrayDataTypes.GetNetType(_currentDataType);
+                currentDataType = ArrayDataType.Float;
+                InputHint.Text = ArrayDataTypes.GetInputHint(currentDataType);
+                arrayManagerService.DataType = ArrayDataTypes.GetNetType(currentDataType);
             }
             else if (DateTimeRadioButton.IsChecked == true)
             {
-                _currentDataType = ArrayDataType.DateTime;
-                InputHint.Text = ArrayDataTypes.GetInputHint(_currentDataType);
-                _arrayManagerService.DataType = ArrayDataTypes.GetNetType(_currentDataType);
+                currentDataType = ArrayDataType.DateTime;
+                InputHint.Text = ArrayDataTypes.GetInputHint(currentDataType);
+                arrayManagerService.DataType = ArrayDataTypes.GetNetType(currentDataType);
             }
         }
 
@@ -216,8 +217,13 @@ namespace WpfAppSorter
             if (ArraySizeLabel != null)
             {
                 ArraySizeLabel.Text = $"Размер: {(int)e.NewValue}";
-                _arrayManagerService.MaxSize = (int)e.NewValue;
+                arrayManagerService.MaxSize = (int)e.NewValue;
             }
+        }
+
+        private void ElementInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            AddElementButton.IsEnabled = !string.IsNullOrWhiteSpace(ElementInput.Text) && arrayManagerService.CanAddElement();
         }
 
         private void ElementInput_KeyDown(object sender, KeyEventArgs e)
@@ -239,20 +245,26 @@ namespace WpfAppSorter
                     return;
                 }
 
-                if (!_arrayManagerService.CanAddElement())
+                if (!arrayManagerService.CanAddElement())
                 {
                     MessageBox.Show("Массив уже заполнен до максимального размера.", "Предупреждение",
                                   MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
-                object newElement = _arrayManagerService.ParseElement(ElementInput.Text);
+                object newElement = arrayManagerService.ParseElement(ElementInput.Text);
 
-                if (_arrayManagerService.AddElement(newElement))
+                if (arrayManagerService.AddElement(newElement))
                 {
                     ElementInput.Clear();
                     UpdateArrayDisplay();
                     UpdateUIState();
+
+                    //временная заглушка
+                    if (arrayManagerService.IsArrayFull())
+                    {
+                        AddElementButton.IsEnabled = false;
+                    }
                 }
             }
             catch (FormatException ex)
@@ -271,17 +283,18 @@ namespace WpfAppSorter
         {
             try
             {
-                if (_arrayManagerService.CurrentArray.Count == 0)
+                if (arrayManagerService.CurrentArray.Count == 0)
                 {
                     MessageBox.Show("Массив пуст. Нечего удалять.", "Предупреждение",
                                   MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
-                if (_arrayManagerService.RemoveLastElement())
+                if (arrayManagerService.RemoveLastElement())
                 {
                     UpdateArrayDisplay();
                     UpdateUIState();
+                    AddElementButton.IsEnabled = true; //временная заглушка
                 }
             }
             catch (Exception ex)
@@ -295,9 +308,11 @@ namespace WpfAppSorter
         {
             try
             {
-                _arrayManagerService.ClearArray();
+                arrayManagerService.ClearArray();
                 UpdateArrayDisplay();
                 UpdateUIState();
+
+                AddElementButton.IsEnabled = true; //временная заглушка
             }
             catch (Exception ex)
             {
@@ -308,16 +323,19 @@ namespace WpfAppSorter
 
         private void UpdateArrayDisplay()
         {
-            ArrayDisplay.Text = _arrayManagerService.GetArrayDisplay();
+            ArrayDisplay.Text = arrayManagerService.GetArrayDisplay();
         }
 
         private void UpdateUIState()
         {
-            bool isInitialized = _arrayManagerService.IsInitialized;
+            bool isInitialized = arrayManagerService.IsInitialized;
             IntRadioButton.IsEnabled = !isInitialized;
             FloatRadioButton.IsEnabled = !isInitialized;
             DateTimeRadioButton.IsEnabled = !isInitialized;
             ArraySizeSlider.IsEnabled = !isInitialized;
+            RemoveElementButton.IsEnabled = isInitialized;
+            ClearArrayButton.IsEnabled = isInitialized;
+            SortButton.IsEnabled = arrayManagerService.IsArrayFull(); // Доступ к сортировке при заполненном массиве (возможно переделать на вариант "есть хоть один элемент")
         }
 
         #endregion
@@ -328,14 +346,14 @@ namespace WpfAppSorter
         {
             try
             {
-                if (_arrayManagerService.CurrentArray.Count == 0)
+                if (arrayManagerService.CurrentArray.Count == 0)
                 {
                     MessageBox.Show("Массив пуст. Нечего сортировать.", "Предупреждение",
                                   MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
-                if (!_arrayManagerService.IsArrayFull())
+                if (!arrayManagerService.IsArrayFull())
                 {
                     MessageBox.Show("Массив не полностью заполнен. Заполните массив полностью перед сортировкой.",
                                   "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -347,22 +365,22 @@ namespace WpfAppSorter
 
                 if (BubbleSortRadio.IsChecked == true)
                 {
-                    sortedArray = _arraySorterService.BubbleSort(_arrayManagerService.CurrentArray);
+                    sortedArray = arraySorterService.BubbleSort(arrayManagerService.CurrentArray);
                     sortType = "Пузырьковая сортировка";
                 }
                 else if (SelectionSortRadio.IsChecked == true)
                 {
-                    sortedArray = _arraySorterService.SelectionSort(_arrayManagerService.CurrentArray);
+                    sortedArray = arraySorterService.SelectionSort(arrayManagerService.CurrentArray);
                     sortType = "Сортировка выбором";
                 }
                 else if (InsertionSortRadio.IsChecked == true)
                 {
-                    sortedArray = _arraySorterService.InsertionSort(_arrayManagerService.CurrentArray);
+                    sortedArray = arraySorterService.InsertionSort(arrayManagerService.CurrentArray);
                     sortType = "Сортировка вставками";
                 }
                 else if (QuickSortRadio.IsChecked == true)
                 {
-                    sortedArray = _arraySorterService.QuickSort(_arrayManagerService.CurrentArray);
+                    sortedArray = arraySorterService.QuickSort(arrayManagerService.CurrentArray);
                     sortType = "Быстрая сортировка";
                 }
                 else
@@ -372,7 +390,7 @@ namespace WpfAppSorter
                     return;
                 }
 
-                SortResultDisplay.Text = $"Исходный массив:\n{string.Join(", ", _arrayManagerService.CurrentArray)}\n\n" +
+                SortResultDisplay.Text = $"Исходный массив:\n{string.Join(", ", arrayManagerService.CurrentArray)}\n\n" +
                                        $"Результат {sortType}:\n{string.Join(", ", sortedArray)}";
             }
             catch (Exception ex)
@@ -395,14 +413,14 @@ namespace WpfAppSorter
                     string filePath = selectedItem.Tag?.ToString();
                     if (!string.IsNullOrEmpty(filePath))
                     {
-                        Type dataType = ArrayDataTypes.GetNetType(_currentDataType);
-                        var loadedArray = _fileManagerService.LoadArrayFromFile(filePath, dataType);
+                        Type dataType = ArrayDataTypes.GetNetType(currentDataType);
+                        var loadedArray = fileManagerService.LoadArrayFromFile(filePath, dataType);
 
                         // Очищаем текущий массив и добавляем загруженные элементы
-                        _arrayManagerService.ClearArray();
+                        arrayManagerService.ClearArray();
                         foreach (var element in loadedArray)
                         {
-                            _arrayManagerService.AddElement(element);
+                            arrayManagerService.AddElement(element);
                         }
 
                         UpdateArrayDisplay();
@@ -433,7 +451,7 @@ namespace WpfAppSorter
                     string filePath = selectedItem.Tag?.ToString();
                     if (!string.IsNullOrEmpty(filePath))
                     {
-                        _fileManagerService.RemoveFile(filePath);
+                        fileManagerService.RemoveFile(filePath);
                         FilesTreeView.Items.Remove(selectedItem);
                     }
                 }
@@ -455,7 +473,7 @@ namespace WpfAppSorter
             try
             {
                 FilesTreeView.Items.Clear();
-                var trackedFiles = _fileManagerService.GetTrackedFiles();
+                var trackedFiles = fileManagerService.GetTrackedFiles();
                 foreach (var filePath in trackedFiles)
                 {
                     AddFileToTree(filePath);

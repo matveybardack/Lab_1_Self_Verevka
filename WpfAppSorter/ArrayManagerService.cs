@@ -13,27 +13,27 @@ namespace WpfAppSorter.Services
     /// </summary>
     public class ArrayManagerService : IArrayManagerService
     {
-        private List<object> _currentArray;
-        private Type _dataType;
-        private int _maxSize;
-        private bool _isInitialized;
+        private List<object> currentArray;
+        private Type dataType;
+        private int maxSize;
+        private bool isInitialized;
 
         /// <summary>
         /// Текущий массив
         /// </summary>
-        public List<object> CurrentArray => new List<object>(_currentArray);
+        public List<object> CurrentArray => new List<object>(currentArray);
 
         /// <summary>
         /// Тип данных массива
         /// </summary>
         public Type DataType
         {
-            get => _dataType;
+            get => dataType;
             set
             {
-                if (!_isInitialized)
+                if (!isInitialized)
                 {
-                    _dataType = value;
+                    dataType = value;
                 }
             }
         }
@@ -43,12 +43,12 @@ namespace WpfAppSorter.Services
         /// </summary>
         public int MaxSize
         {
-            get => _maxSize;
+            get => maxSize;
             set
             {
-                if (!_isInitialized)
+                if (!isInitialized)
                 {
-                    _maxSize = value;
+                    maxSize = value;
                 }
             }
         }
@@ -56,17 +56,17 @@ namespace WpfAppSorter.Services
         /// <summary>
         /// Флаг инициализации массива
         /// </summary>
-        public bool IsInitialized => _isInitialized;
+        public bool IsInitialized => isInitialized;
 
         /// <summary>
         /// Конструктор
         /// </summary>
         public ArrayManagerService()
         {
-            _currentArray = new List<object>();
-            _dataType = typeof(int);
-            _maxSize = 5;
-            _isInitialized = false;
+            currentArray = new List<object>();
+            dataType = typeof(int);
+            maxSize = 5;
+            isInitialized = false;
         }
 
         /// <summary>
@@ -82,12 +82,12 @@ namespace WpfAppSorter.Services
             if (!CanAddElement())
                 return false;
 
-            _currentArray.Add(element);
+            currentArray.Add(element);
             
             // После добавления первого элемента блокируем изменение типа и размера
-            if (_currentArray.Count == 1)
+            if (currentArray.Count == 1)
             {
-                _isInitialized = true;
+                isInitialized = true;
             }
 
             return true;
@@ -99,15 +99,15 @@ namespace WpfAppSorter.Services
         /// <returns>True, если элемент удален успешно</returns>
         public bool RemoveLastElement()
         {
-            if (_currentArray.Count == 0)
+            if (currentArray.Count == 0)
                 return false;
 
-            _currentArray.RemoveAt(_currentArray.Count - 1);
+            currentArray.RemoveAt(currentArray.Count - 1);
             
             // Если массив стал пустым, разблокируем изменение типа и размера
-            if (_currentArray.Count == 0)
+            if (currentArray.Count == 0)
             {
-                _isInitialized = false;
+                isInitialized = false;
             }
 
             return true;
@@ -118,8 +118,8 @@ namespace WpfAppSorter.Services
         /// </summary>
         public void ClearArray()
         {
-            _currentArray.Clear();
-            _isInitialized = false;
+            currentArray.Clear();
+            isInitialized = false;
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace WpfAppSorter.Services
         /// <returns>True, если можно добавить элемент</returns>
         public bool CanAddElement()
         {
-            return _currentArray.Count < _maxSize;
+            return currentArray.Count < maxSize;
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace WpfAppSorter.Services
         /// <returns>True, если массив заполнен полностью</returns>
         public bool IsArrayFull()
         {
-            return _currentArray.Count >= _maxSize;
+            return currentArray.Count >= maxSize;
         }
 
         /// <summary>
@@ -152,11 +152,11 @@ namespace WpfAppSorter.Services
 
             try
             {
-                return ClassLibrarySorter.ValueParser.ParseValue(input, _dataType);
+                return ClassLibrarySorter.ValueParser.ParseValue(input, dataType);
             }
             catch (FormatException ex)
             {
-                throw new FormatException($"Не удалось преобразовать '{input}' в тип {_dataType.Name}", ex);
+                throw new FormatException($"Не удалось преобразовать '{input}' в тип {dataType.Name}", ex);
             }
         }
 
@@ -166,14 +166,14 @@ namespace WpfAppSorter.Services
         /// <returns>Строковое представление массива</returns>
         public string GetArrayDisplay()
         {
-            if (_currentArray.Count == 0)
+            if (currentArray.Count == 0)
             {
                 return "Массив пуст";
             }
             else
             {
-                return $"Массив ({_currentArray.Count} элементов):\n" + 
-                       string.Join(", ", _currentArray);
+                return $"Массив ({currentArray.Count} элементов):\n" + 
+                       string.Join(", ", currentArray);
             }
         }
     }

@@ -13,14 +13,14 @@ namespace WpfAppSorter.Services
     /// </summary>
     public class ArraySorterService : IArraySorterService
     {
-        private readonly ArraySorter _arraySorter;
+        private readonly ArraySorter arraySorter;
 
         /// <summary>
         /// Конструктор
         /// </summary>
         public ArraySorterService()
         {
-            _arraySorter = new ArraySorter();
+            arraySorter = new ArraySorter();
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace WpfAppSorter.Services
         /// <returns>Отсортированный массив</returns>
         public List<object> BubbleSort(List<object> array)
         {
-            return _arraySorter.BubbleSort(array);
+            return arraySorter.BubbleSort(array);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace WpfAppSorter.Services
         /// <returns>Отсортированный массив</returns>
         public List<object> SelectionSort(List<object> array)
         {
-            return _arraySorter.SelectionSort(array);
+            return arraySorter.SelectionSort(array);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace WpfAppSorter.Services
         /// <returns>Отсортированный массив</returns>
         public List<object> InsertionSort(List<object> array)
         {
-            return _arraySorter.InsertionSort(array);
+            return arraySorter.InsertionSort(array);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace WpfAppSorter.Services
         /// <returns>Отсортированный массив</returns>
         public List<object> QuickSort(List<object> array)
         {
-            return _arraySorter.QuickSort(array);
+            return arraySorter.QuickSort(array);
         }
 
         

@@ -180,7 +180,9 @@
 
             <!-- Вкладка 2: Массив -->
             <TabItem Header="Массив"
-                     Style="{StaticResource TabItemStyle}">
+                     Style="{StaticResource TabItemStyle}"
+                     Height="39"
+                     VerticalAlignment="Top">
                 <Grid Margin="20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -225,7 +227,8 @@
                                            Margin="0,0,0,5" />
                                 <TextBox Name="ElementInput"
                                          Padding="5"
-                                         KeyDown="ElementInput_KeyDown" />
+                                         KeyDown="ElementInput_KeyDown" 
+                                         TextChanged="ElementInput_TextChanged"/>
                                 <TextBlock Name="InputHint"
                                            Text="Введите целое число"
                                            FontSize="10"
@@ -239,19 +242,20 @@
                                 <Button Name="AddElementButton"
                                         Content="Добавить"
                                         Style="{StaticResource ButtonStyle}"
-                                        Click="AddElementButton_Click" />
+                                        Click="AddElementButton_Click"
+                                        IsEnabled="False" />
                                 <Button Name="RemoveElementButton"
                                         Content="Удалить"
+                                        Style="{StaticResource ButtonStyle}"
                                         Background="#E74C3C"
-                                        Foreground="White"
-                                        Margin="5"
-                                        Click="RemoveElementButton_Click" />
+                                        Click="RemoveElementButton_Click"
+                                        IsEnabled="False" />
                                 <Button Name="ClearArrayButton"
                                         Content="Очистить"
+                                        Style="{StaticResource ButtonStyle}"
                                         Background="#F39C12"
-                                        Foreground="White"
-                                        Margin="5"
-                                        Click="ClearArrayButton_Click" />
+                                        Click="ClearArrayButton_Click"
+                                        IsEnabled="False" />
                             </StackPanel>
                         </Grid>
                     </GroupBox>
@@ -304,7 +308,8 @@
                                     Content="Выполнить сортировку"
                                     Style="{StaticResource ButtonStyle}"
                                     Margin="10,10,0,0"
-                                    Click="SortButton_Click" />
+                                    Click="SortButton_Click"
+                                    IsEnabled="False" />
                         </StackPanel>
                     </GroupBox>
 
