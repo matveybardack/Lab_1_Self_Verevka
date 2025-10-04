@@ -193,18 +193,21 @@ namespace WpfAppSorter
                 currentDataType = ArrayDataType.Integer;
                 InputHint.Text = ArrayDataTypes.GetInputHint(currentDataType);
                 arrayManagerService.DataType = ArrayDataTypes.GetNetType(currentDataType);
+                DatePicker.Visibility = Visibility.Collapsed;
             }
             else if (FloatRadioButton.IsChecked == true)
             {
                 currentDataType = ArrayDataType.Float;
                 InputHint.Text = ArrayDataTypes.GetInputHint(currentDataType);
                 arrayManagerService.DataType = ArrayDataTypes.GetNetType(currentDataType);
+                DatePicker.Visibility = Visibility.Collapsed;
             }
             else if (DateTimeRadioButton.IsChecked == true)
             {
                 currentDataType = ArrayDataType.DateTime;
                 InputHint.Text = ArrayDataTypes.GetInputHint(currentDataType);
                 arrayManagerService.DataType = ArrayDataTypes.GetNetType(currentDataType);
+                DatePicker.Visibility = Visibility.Visible;
             }
         }
 
@@ -218,6 +221,15 @@ namespace WpfAppSorter
             {
                 ArraySizeLabel.Text = $"Размер: {(int)e.NewValue}";
                 arrayManagerService.MaxSize = (int)e.NewValue;
+            }
+        }
+
+        private void DatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DatePicker.SelectedDate.HasValue)
+            {
+                ElementInput.Text = DatePicker.SelectedDate.Value.ToString("dd.MM.yyyy");
+                ElementInput.CaretIndex = ElementInput.Text.Length;
             }
         }
 

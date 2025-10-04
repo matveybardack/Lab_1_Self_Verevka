@@ -55,21 +55,6 @@ namespace WpfAppSorter.Services
         }
 
         /// <summary>
-        /// Добавляет файл в список отслеживаемых файлов
-        /// </summary>
-        /// <param name="filePath">Путь к файлу</param>
-        public void AddFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-                throw new ArgumentException("Путь к файлу не может быть пустым", nameof(filePath));
-
-            if (!trackedFiles.Contains(filePath))
-            {
-                trackedFiles.Add(filePath);
-            }
-        }
-
-        /// <summary>
         /// Удаляет файл из списка отслеживаемых файлов
         /// </summary>
         /// <param name="filePath">Путь к файлу</param>

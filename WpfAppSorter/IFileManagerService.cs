@@ -24,12 +24,6 @@ namespace WpfAppSorter.Interfaces
         List<object> LoadArrayFromFile(string filePath, Type dataType);
 
         /// <summary>
-        /// Добавляет файл в список отслеживаемых файлов
-        /// </summary>
-        /// <param name="filePath">Путь к файлу</param>
-        void AddFile(string filePath);
-
-        /// <summary>
         /// Удаляет файл из списка отслеживаемых файлов
         /// </summary>
         /// <param name="filePath">Путь к файлу</param>

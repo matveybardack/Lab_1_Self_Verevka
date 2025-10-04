@@ -8,50 +8,66 @@ skinparam classAttributeIconSize 0
 package "WpfAppSorter (UI & Сервисы)" {
 
   interface IArrayManagerService {
-    +Add(item: string)
-    +Remove(index: int)
-    +Clear()
-    +IsInitialized(): bool
-    +ParseElement(value: string): object
+    +CurrentArray: List<object>
+    +DataType: Type
+    +MaxSize: int
+    +IsInitialized: bool
+    +AddElement(element: object): bool
+    +RemoveLastElement(): bool
+    +ClearArray()
+    +CanAddElement(): bool
+    +IsArrayFull(): bool
+    +ParseElement(input: string): object
+    +GetArrayDisplay(): string
   }
 
   interface IArraySorterService {
-    +BubbleSort(items: IList<object>)
-    +SelectionSort(items: IList<object>)
-    +InsertionSort(items: IList<object>)
-    +QuickSort(items: IList<object>)
-    +Compare(a: object, b: object): int
+    +BubbleSort(array: List<object>): List<object>
+    +SelectionSort(array: List<object>): List<object>
+    +InsertionSort(array: List<object>): List<object>
+    +QuickSort(array: List<object>): List<object>
   }
 
   interface IFileManagerService {
-    +Save(path: string, items: IList<object>)
-    +Load(path: string): IList<object>
-    +TrackFile(path: string)
-    +GetTrackedFiles(): IList<string>
+    +SaveArrayToFile(array: List<object>, filePath: string)
+    +LoadArrayFromFile(filePath: string, dataType: Type): List<object>
+    +RemoveFile(filePath: string)
+    +GetTrackedFiles(): List<string>
   }
 
   class ArrayManagerService {
-    -items: List<object>
-    -locked: bool
-    +Add(item: string)
-    +Remove(index: int)
-    +Clear()
-    +IsInitialized(): bool
+    -currentArray: List<object>
+    -dataType: Type
+    -maxSize: int
+    -isInitialized: bool
+    +CurrentArray: List<object>
+    +DataType: Type
+    +MaxSize: int
+    +IsInitialized: bool
+    +AddElement(element: object): bool
+    +RemoveLastElement(): bool
+    +ClearArray()
+    +CanAddElement(): bool
+    +IsArrayFull(): bool
+    +ParseElement(input: string): object
+    +GetArrayDisplay(): string
   }
 
   class ArraySorterService {
-    +BubbleSort(items: IList<object>)
-    +SelectionSort(items: IList<object>)
-    +InsertionSort(items: IList<object>)
-    +QuickSort(items: IList<object>)
+    -arraySorter: ArraySorter
+    +BubbleSort(array: List<object>): List<object>
+    +SelectionSort(array: List<object>): List<object>
+    +InsertionSort(array: List<object>): List<object>
+    +QuickSort(array: List<object>): List<object>
   }
 
   class FileManagerService {
+    -directoryViewer: DirectoryViewer
     -trackedFiles: List<string>
-    +Save(path: string, items: IList<object>)
-    +Load(path: string): IList<object>
-    +TrackFile(path: string)
-    +GetTrackedFiles(): IList<string>
+    +SaveArrayToFile(array: List<object>, filePath: string)
+    +LoadArrayFromFile(filePath: string, dataType: Type): List<object>
+    +RemoveFile(filePath: string)
+    +GetTrackedFiles(): List<string>
   }
 
   class MainWindow {
@@ -65,28 +81,28 @@ package "WpfAppSorter (UI & Сервисы)" {
 package "ClassLibrarySorter (чистая логика)" {
 
   class ArraySorter {
-    +BubbleSort(items: IList<object>)
-    +SelectionSort(items: IList<object>)
-    +InsertionSort(items: IList<object>)
-    +QuickSort(items: IList<object>)
+    +BubbleSort(array: List<object>): List<object>
+    +SelectionSort(array: List<object>): List<object>
+    +InsertionSort(array: List<object>): List<object>
+    +QuickSort(array: List<object>): List<object>
     +CompareObjects(a: object, b: object): int
   }
 
   class DirectoryViewer {
-    +Save(path: string, items: IList<object>)
-    +Load(path: string): IList<object>
+    +SaveArrayToFile(array: List<object>, filePath: string)
+    +LoadArrayFromFile(filePath: string, dataType: Type): List<object>
   }
 
   class ValueParser {
-    +ParseValue(value: string, targetType: Type): object
-    +TryParseDateExact(value: string, formats: string[], culture: CultureInfo): DateTime
+    +ParseValue(value: string, dataType: Type): object
   }
 
   class ArrayDataTypes {
     +Integer
     +Float
     +DateTime
-    +GetSupportedFormats(): IList<string>
+    +GetNetType(dataType: ArrayDataType): Type
+    +GetInputHint(dataType: ArrayDataType): string
   }
 }
 

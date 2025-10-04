@@ -56,17 +56,5 @@ namespace WpfAppSorter.Models
                     return "Введите значение";
             }
         }
-
-        /// <summary>
-        /// Парсит строку в объект указанного типа
-        /// </summary>
-        /// <param name="input">Входная строка</param>
-        /// <param name="dataType">Тип данных</param>
-        /// <returns>Распарсенный объект</returns>
-        public static object ParseValue(string input, ArrayDataType dataType)
-        {
-            var netType = GetNetType(dataType);
-            return ClassLibrarySorter.ValueParser.ParseValue(input, netType);
-        }
     }
 }

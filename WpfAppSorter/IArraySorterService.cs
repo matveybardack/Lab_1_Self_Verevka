@@ -35,12 +35,5 @@ namespace WpfAppSorter.Interfaces
         /// <param name="array">Массив для сортировки</param>
         /// <returns>Отсортированный массив</returns>
         List<object> QuickSort(List<object> array);
-
-        /// <summary>
-        /// Сравнивает два объекта
-        /// </summary>
-        /// <param name="a">Первый объект</param>
-        /// <param name="b">Второй объект</param>
-        /// <returns>Результат сравнения</returns>
     }
 }

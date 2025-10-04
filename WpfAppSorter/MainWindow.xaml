@@ -220,15 +220,17 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0">
+                            <StackPanel Grid.Column="0"
+                                        VerticalAlignment="Center">
                                 <TextBlock Text="Введите элемент:"
                                            Margin="0,0,0,5" />
                                 <TextBox Name="ElementInput"
                                          Padding="5"
-                                         KeyDown="ElementInput_KeyDown" 
-                                         TextChanged="ElementInput_TextChanged"/>
+                                         KeyDown="ElementInput_KeyDown"
+                                         TextChanged="ElementInput_TextChanged" />
                                 <TextBlock Name="InputHint"
                                            Text="Введите целое число"
                                            FontSize="10"
@@ -237,8 +239,8 @@
                             </StackPanel>
 
                             <StackPanel Grid.Column="1"
-                                        VerticalAlignment="Bottom"
-                                        Margin="10,0,0,0">
+                                        VerticalAlignment="Center"
+                                        Margin="5,10,5,5">
                                 <Button Name="AddElementButton"
                                         Content="Добавить"
                                         Style="{StaticResource ButtonStyle}"
@@ -257,6 +259,17 @@
                                         Click="ClearArrayButton_Click"
                                         IsEnabled="False" />
                             </StackPanel>
+
+                            <StackPanel Grid.Column="2"
+                                        Margin="0,0,0,0"
+                                        VerticalAlignment="Top">
+                                <Calendar Name="DatePicker"
+                                          Grid.Column="0"
+                                          Visibility="Collapsed"
+                                          Margin="0,5,0,0" 
+                                          SelectedDatesChanged="DatePicker_SelectedDateChanged"/>
+                            </StackPanel>
+
                         </Grid>
                     </GroupBox>
 
